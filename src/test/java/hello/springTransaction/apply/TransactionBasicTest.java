@@ -1,24 +1,22 @@
 package hello.springTransaction.apply;
 
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.helpers.BasicMDCAdapter;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @SpringBootTest
-public class BasicTest {
+@Transactional(readOnly = true)
+public class TransactionBasicTest {
 
     @Autowired
     private BasicService basicService;
@@ -34,7 +32,7 @@ public class BasicTest {
 
     @Test
     @DisplayName("Transaction AOP Proxy Test")
-    void AopTest() {
+    void AopProxyTTest() {
 
         // when...
         log.info("aop class={}", basicService.getClass().getName());
@@ -58,12 +56,16 @@ public class BasicTest {
 
     static class BasicService {
 
-        @Transactional
+        @Transactional(readOnly = false)
         public void tx() {
             log.info("call tx");
             boolean transactionActive = TransactionSynchronizationManager.isActualTransactionActive();
+            boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
             if (transactionActive) {
                 log.info("transaction active : {}", transactionActive);
+                log.info("tx readOnly={}", readOnly);
+
+
             }
         }
 
@@ -71,8 +73,9 @@ public class BasicTest {
         public void nonTx() {
             log.info("Non call tx");
             boolean transactionActive = TransactionSynchronizationManager.isActualTransactionActive();
-            if (!transactionActive) {
+            boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();if (!transactionActive) {
                 log.info("transaction active : {}", transactionActive);
+                log.info("tx readOnly={}", readOnly);
             }
         }
     }
