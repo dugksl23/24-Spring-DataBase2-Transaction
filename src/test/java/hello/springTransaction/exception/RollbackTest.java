@@ -66,7 +66,7 @@ class RollbackService {
         throw new MyException();
     }
 
-    // 체크 예외 rollbackFor 지정 : 롤백
+     // 체크 예외 rollbackFor 지정 : 롤백
     @Transactional(rollbackFor = MyException.class)
     public void rollbackFor() throws MyException {
         throw new MyException();
