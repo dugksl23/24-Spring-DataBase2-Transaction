@@ -38,7 +38,7 @@ public class BasicTxTest {
 
 
     @Test
-    void commitV1(){
+    void commitV1() {
 
         log.info("TransactionV1 시작");
         TransactionStatus transaction1 = transactionManager.getTransaction(new DefaultTransactionDefinition());
@@ -50,7 +50,7 @@ public class BasicTxTest {
     }
 
     @Test
-    void commitV2(){
+    void double_commit() {
 
         log.info("Transaction V2 시작");
         log.info("Transaction V2 conn 1 시작");
@@ -70,8 +70,8 @@ public class BasicTxTest {
     }
 
 
-//    @Test
-    void rollback(){
+    //    @Test
+    void rollback() {
 
         log.info("Transaction 시작");
         TransactionStatus transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
