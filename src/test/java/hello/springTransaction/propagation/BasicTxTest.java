@@ -149,7 +149,7 @@ public class BasicTxTest {
     }
 
     @Test
-//    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
+    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     void inner_rollback_requires_new(){
 
         log.info("외부 트랜잭션 시작");
