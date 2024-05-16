@@ -82,4 +82,46 @@ public class BasicTxTest {
 
     }
 
+    @Test
+    void inner_commit(){
+
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("outer.isNewTransaction() = {}", outer.isNewTransaction());
+        // isNewTransaction() 처음 수행된 트랜잭션인지 확인하는 메서드
+
+        log.info("내부 트랜잭션 시작");
+        TransactionStatus inner = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());
+
+        log.info("inner commit 수행 중");
+        transactionManager.commit(inner);
+        log.info("inner commit 완료");
+
+        log.info("outer commit 실행 중");
+        transactionManager.commit(outer);
+        log.info("outer commit   완료");
+    }
+
+    @Test
+    void outer_rollback(){
+
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("outer.isNewTransaction() = {}", outer.isNewTransaction());
+        // isNewTransaction() 처음 수행된 트랜잭션인지 확인하는 메서드
+
+        log.info("내부 트랜잭션 시작");
+        TransactionStatus inner = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());
+
+        log.info("inner commit 수행 중");
+        transactionManager.commit(inner);
+        log.info("inner commit 완료");
+
+        log.info("outer rollback 실행 중");
+        transactionManager.rollback(outer);
+        log.info("outer rollback 완료");
+    }
+
 }

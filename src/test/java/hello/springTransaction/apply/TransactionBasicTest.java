@@ -73,7 +73,8 @@ public class TransactionBasicTest {
         public void nonTx() {
             log.info("Non call tx");
             boolean transactionActive = TransactionSynchronizationManager.isActualTransactionActive();
-            boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();if (!transactionActive) {
+            boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
+            if (!transactionActive) {
                 log.info("transaction active : {}", transactionActive);
                 log.info("tx readOnly={}", readOnly);
             }
