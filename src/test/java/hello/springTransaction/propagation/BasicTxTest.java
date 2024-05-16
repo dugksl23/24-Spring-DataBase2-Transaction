@@ -13,10 +13,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.sql.DataSource;
+
+import static org.springframework.transaction.TransactionDefinition.*;
 
 @SpringBootTest
 @Slf4j
@@ -143,6 +146,34 @@ public class BasicTxTest {
         log.info("outer commit 실행 중");
         transactionManager.commit(outer);
         log.info("outer commit 완료");
+    }
+
+    @Test
+//    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
+    void inner_rollback_requires_new(){
+
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("outer.isNewTransaction() = {}", outer.isNewTransaction());
+        // isNewTransaction() 처음 수행된 트랜잭션인지 확인하는 메서드
+
+        innerRollback_logic();
+
+        log.info("outer commit 실행 중");
+        transactionManager.commit(outer);
+        log.info("outer commit 완료");
+    }
+
+    private void innerRollback_logic() {
+        log.info("내부 트랜잭션 시작");
+        DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
+        defaultTransactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus inner = transactionManager.getTransaction(defaultTransactionDefinition);
+        log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());
+
+        log.info("inner rollback 수행 중");
+        transactionManager.rollback(inner); // 기존 외부 트랜잭션의 DB Connection 에 rollback-only 마크
+        log.info("inner rollback 완료");
     }
 
 }
