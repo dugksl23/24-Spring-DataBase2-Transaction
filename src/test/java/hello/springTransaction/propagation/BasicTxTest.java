@@ -168,6 +168,7 @@ public class BasicTxTest {
         log.info("내부 트랜잭션 시작");
         DefaultTransactionDefinition defaultTransactionDefinition = new DefaultTransactionDefinition();
         defaultTransactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+
         TransactionStatus inner = transactionManager.getTransaction(defaultTransactionDefinition);
         log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());
 

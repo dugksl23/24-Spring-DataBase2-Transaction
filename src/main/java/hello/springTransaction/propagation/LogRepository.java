@@ -11,25 +11,23 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class LogRepository {
 
     private final EntityManager entityManager;
 
-    @Transactional
     public void save(Log logger) {
         log.info("log save : {}", logger.getMessage());
         entityManager.persist(logger);
 
-        if(logger.getMessage().contains("롤백 예외")){
+        if(logger.getMessage().contains("로그 예외")){
             log.info("checked Exception : runtime Exception");
             throw new RuntimeException();
         }
 
     }
 
-    public Optional<Log> findByUserName(String message) {
+    public Optional<Log> findByMessage(String message) {
         return entityManager.createQuery("select l from Log l where l.message = :message", Log.class)
                 .setParameter("message", message)
                 .getResultStream().findFirst();

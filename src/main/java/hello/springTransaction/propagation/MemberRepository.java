@@ -14,13 +14,11 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class MemberRepository {
 
     private final EntityManager em;
 
-    @Transactional
     public void save(Member member) {
         log.info("member save");
         em.persist(member);
@@ -38,8 +36,8 @@ public class MemberRepository {
     }
 
     @Query("select m from Member m where m.userName = :userName")
-    public Optional<Member> findByUsername(@Param("userName") String username) {
-        log.info("member findByUsername");
+    public Optional<Member> findByUserName(@Param("userName") String username) {
+        log.info("member findByUserName");
         String query = "select m from Member m where m.userName = :userName";
         return em.createQuery(query, Member.class)
                 .setParameter("userName", username)
