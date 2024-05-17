@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -82,9 +83,33 @@ class MemberServiceTest {
 
 
     @Test
-    void joinMemberTestV2() {
-        String userName = "롤백 예외";
+    void joinMember_SingleTransactionCommitTestV1() {
+        // given...
+        String userName = "";
+
+        // when...
+        memberService.joinV1(userName);
+
+        // then..
+        assertTrue(memberService.findByUserName(userName).isPresent());
+        Assertions.assertTrue(logService.findByMessage(userName).isPresent());
+
+    }
+
+    @Test
+    void joinMember_SingleTransactionRollbackTestV1() {
+
+
+        // given...
+        String userName = "로그 예외";
+
+        // when...
         memberService.joinV2(userName);
+
+        // then..
+        assertThatThrownBy(() -> memberService.joinV2(userName))
+                .isInstanceOf(RuntimeException.class);
+
     }
 
 }

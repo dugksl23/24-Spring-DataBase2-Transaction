@@ -31,6 +31,7 @@ public class MemberService {
         log.info("logRepository 호출 종료");
     }
 
+    @Transactional
     public void joinV2(String userName) {
         log.info("joinV2 userName={}", userName);
         Member member = new Member(userName);

@@ -14,11 +14,13 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Slf4j
 public class MemberRepository {
 
     private final EntityManager em;
 
+    @Transactional
     public void save(Member member) {
         log.info("member save");
         em.persist(member);
