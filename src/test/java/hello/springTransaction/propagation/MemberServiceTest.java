@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.UnexpectedRollbackException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -110,5 +111,21 @@ class MemberServiceTest {
                 .isInstanceOf(RuntimeException.class);
 
     }
+
+    @Test
+    void joinMember_RecoverException_failTest() {
+
+        // given...
+        String userName = "로그 예외";
+
+        // when...
+        memberService.joinV2(userName);
+
+        // then..
+        assertThatThrownBy(() -> memberService.joinV2(userName))
+                .isInstanceOf(UnexpectedRollbackException.class);
+
+    }
+
 
 }

@@ -21,7 +21,7 @@ public class LogRepository {
     @Transactional
 //            (propagation = Propagation.REQUIRES_NEW)
     public void save(Log logger) {
-        log.info("log save : {}", logger.getMessage());
+        log.info("log message : {}", logger.getMessage());
         entityManager.persist(logger);
 
         if(logger.getMessage().contains("로그 예외")){

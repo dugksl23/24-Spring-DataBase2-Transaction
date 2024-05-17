@@ -44,7 +44,7 @@ public class MemberService {
         try {
             logRepository.save(logMsg);
         } catch (RuntimeException e) {
-            log.info("로그 저장 실패 : {}", e.getMessage());
+            log.info("로그 저장 실패 : {}", logMsg);
             log.info("정상 흐름 반환"); // 예외 흐름 복구 및 정상 흐름으로 반환
 //            throw e;
         }
