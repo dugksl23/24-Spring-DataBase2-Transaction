@@ -97,8 +97,7 @@ class MemberServiceTest {
     }
 
     @Test
-    void joinMember_SingleTransactionRollbackTestV1() {
-
+    void joinMember_SingleTransactionRollbackTestV2() {
 
         // given...
         String userName = "로그 예외";

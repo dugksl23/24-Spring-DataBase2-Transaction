@@ -16,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.sql.DataSource;
 
@@ -89,6 +90,7 @@ public class BasicTxTest {
     void inner_commit(){
 
         log.info("외부 트랜잭션 시작");
+
         TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
         log.info("outer.isNewTransaction() = {}", outer.isNewTransaction());
         // isNewTransaction() 처음 수행된 트랜잭션인지 확인하는 메서드
@@ -170,7 +172,7 @@ public class BasicTxTest {
         defaultTransactionDefinition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
         TransactionStatus inner = transactionManager.getTransaction(defaultTransactionDefinition);
-        log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());
+        log.info("inner.isNewTransaction() = {}", inner.isNewTransaction());;
 
         log.info("inner rollback 수행 중");
         transactionManager.rollback(inner); // 기존 외부 트랜잭션의 DB Connection 에 rollback-only 마크
