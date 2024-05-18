@@ -18,8 +18,7 @@ public class LogRepository {
 
     private final EntityManager entityManager;
 
-    @Transactional
-//            (propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void save(Log logger) {
         log.info("log message : {}", logger.getMessage());
         entityManager.persist(logger);
