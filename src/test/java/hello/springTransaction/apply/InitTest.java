@@ -32,6 +32,7 @@ public class InitTest {
 
     @Test
     void initTest() {
+        //initService.initV1(); -> transactionSynchronizationManager.isActualTransaction = true
         log.info("aop class={}", this.getClass().getName());
     }
 
